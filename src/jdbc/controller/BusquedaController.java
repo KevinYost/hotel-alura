@@ -27,148 +27,38 @@ public class BusquedaController {
 		this.huespedesDAO = new HuespedesDAO(new ConnectionFactory().recuperaConexion());
 	}
 	
+	
+	
 	public List<Map<String, String>> listarReservas(){
-		ConnectionFactory factory = new ConnectionFactory();
-		try{
-			final Connection con = factory.recuperaConexion();
-			try (con) {
-				final PreparedStatement statement = con
-						.prepareStatement("SELECT ID, FechaEntrada, FechaSalida, Valor, FormaPago FROM reservas");
-				try (statement) {
-					statement.execute();
-	
-					ResultSet resultSet = statement.getResultSet();
-	
-					List<Map<String, String>> resultado = new ArrayList<>();
-	
-					while (resultSet.next()) {
-						Map<String, String> fila = new HashMap<>();
-						fila.put("ID", String.valueOf(resultSet.getInt("ID")));
-						fila.put("FechaEntrada", String.valueOf(resultSet.getDate("FechaEntrada")));
-						fila.put("FechaSalida", String.valueOf(resultSet.getDate("FechaSalida")));
-						fila.put("Valor", resultSet.getString("Valor"));
-						fila.put("FormaPago", resultSet.getString("FormaPago"));
-	
-						resultado.add(fila);
-					}
-					return resultado;
-				}
-			}
-			}catch(SQLException e) {
-				throw new RuntimeException(e);
-			}
-		
+		return reservaDAO.listarReservas();
 	}
 	
 	public List<Map<String, String>> listarHuespedes(){
-		ConnectionFactory factory = new ConnectionFactory();
-		final Connection con = factory.recuperaConexion();
-		try (con) {
-			final PreparedStatement statement = con
-					.prepareStatement("SELECT ID, Nombre, Apellido, FechaNacimiento, Nacionalidad, Telefono, idReserva FROM huespedes");
-			try (statement) {
-				statement.execute();
-
-				ResultSet resultSet = statement.getResultSet();
-
-				List<Map<String, String>> resultado = new ArrayList<>();
-
-				while (resultSet.next()) {
-					Map<String, String> fila = new HashMap<>();
-					fila.put("ID", String.valueOf(resultSet.getInt("ID")));
-					fila.put("Nombre", resultSet.getString("Nombre"));
-					fila.put("Apellido", resultSet.getString("Apellido"));
-					fila.put("FechaNacimiento", String.valueOf(resultSet.getDate("FechaNacimiento")));
-					fila.put("Nacionalidad", resultSet.getString("Nacionalidad"));
-					fila.put("Telefono", String.valueOf(resultSet.getInt("Telefono")));
-					fila.put("idReserva", String.valueOf(resultSet.getInt("idReserva")));
-
-					resultado.add(fila);
-				}
-				return resultado;
-			}
-		}catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
+		return huespedesDAO.listarHuespedes();
 	}
+	
+	
 	
 	public int eliminarReservas(Integer id){
-		
 		return reservaDAO.eliminarReservas(id);
-		
 	}
 	
-
 	public int eliminarHuesped(Integer id){
-		return reservaDAO.eliminarHuesped(id);
+		return huespedesDAO.eliminarHuesped(id);
 	}
 
 
+	
 	
 	public  List<Map<String, String>> buscarReservas(String where){
-		ConnectionFactory factory = new ConnectionFactory();
-		try{
-			final Connection con = factory.recuperaConexion();
-			try (con) {
-				final PreparedStatement statement = con
-						.prepareStatement("SELECT ID, FechaEntrada, FechaSalida, Valor, FormaPago FROM reservas " + where);
-				try (statement) {
-					statement.execute();
-	
-					ResultSet resultSet = statement.getResultSet();
-	
-					List<Map<String, String>> resultado = new ArrayList<>();
-	
-					while (resultSet.next()) {
-						Map<String, String> fila = new HashMap<>();
-						fila.put("ID", String.valueOf(resultSet.getInt("ID")));
-						fila.put("FechaEntrada", String.valueOf(resultSet.getDate("FechaEntrada")));
-						fila.put("FechaSalida", String.valueOf(resultSet.getDate("FechaSalida")));
-						fila.put("Valor", resultSet.getString("Valor"));
-						fila.put("FormaPago", resultSet.getString("FormaPago"));
-	
-						resultado.add(fila);
-					}
-					return resultado;
-				}
-			}
-			}catch(SQLException e) {
-				throw new RuntimeException(e);
-			}
+		return reservaDAO.buscarReservas(where);
 	}
 	
 	public List<Map<String, String>> buscarHuespedes(String whereHuesped){
-		ConnectionFactory factory = new ConnectionFactory();
-		final Connection con = factory.recuperaConexion();
-		try (con) {
-			final PreparedStatement statement = con
-					.prepareStatement("SELECT ID, Nombre, Apellido, FechaNacimiento, Nacionalidad, Telefono, idReserva FROM huespedes " + whereHuesped);
-			try (statement) {
-				statement.execute();
-
-				ResultSet resultSet = statement.getResultSet();
-
-				List<Map<String, String>> resultado = new ArrayList<>();
-
-				while (resultSet.next()) {
-					Map<String, String> fila = new HashMap<>();
-					fila.put("ID", String.valueOf(resultSet.getInt("ID")));
-					fila.put("Nombre", resultSet.getString("Nombre"));
-					fila.put("Apellido", resultSet.getString("Apellido"));
-					fila.put("FechaNacimiento", String.valueOf(resultSet.getDate("FechaNacimiento")));
-					fila.put("Nacionalidad", resultSet.getString("Nacionalidad"));
-					fila.put("Telefono", String.valueOf(resultSet.getInt("Telefono")));
-					fila.put("idReserva", String.valueOf(resultSet.getInt("idReserva")));
-
-					resultado.add(fila);
-				}
-				return resultado;
-			}
-		}catch(SQLException e) {
-			throw new RuntimeException(e);
-		}
+		return huespedesDAO.buscarHuespedes(whereHuesped);
 	}
 
+	
 	
 	
 	

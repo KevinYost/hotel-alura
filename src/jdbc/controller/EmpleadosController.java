@@ -21,57 +21,11 @@ public class EmpleadosController {
 	}
 
 	public List<String> verificarUsuario() {
-		ConnectionFactory factory = new ConnectionFactory();
-		try{
-			final Connection con = factory.recuperaConexion();
-			try (con) {
-				final PreparedStatement statement = con
-						.prepareStatement("SELECT usuario FROM usuarios");
-				try (statement) {
-					statement.execute();
-					
-					ResultSet resultSet = statement.getResultSet();
-					
-					List<String> usuarios = new ArrayList<>();
-					
-					while(resultSet.next()) {
-						
-						String usuario = resultSet.getString("usuario");
-						usuarios.add(usuario);	
-				
-					}
-					return usuarios;
-
-					}
-				}
-			}catch(SQLException e) {
-				throw new RuntimeException(e);
-			}
+		return empleadosDAO.verificarUsuario();
 	}
 	
 	public List<String> verificarClave() {
-		ConnectionFactory factory = new ConnectionFactory();
-		try{
-			final Connection con = factory.recuperaConexion();
-			try (con) {
-				final PreparedStatement statement = con
-						.prepareStatement("SELECT clave FROM usuarios");
-				try (statement) {
-					statement.execute();
-					
-					ResultSet resultSet = statement.getResultSet();
-
-					List<String> claves = new ArrayList<>();
-					while(resultSet.next()) {
-						String clave = resultSet.getString("clave");
-						claves.add(clave);					
-					}
-					return claves;
-					}
-				}
-			}catch(SQLException e) {
-				throw new RuntimeException(e);
-			}
+		return empleadosDAO.verificarClave();
 	}
 
 }

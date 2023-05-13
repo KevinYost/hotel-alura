@@ -264,15 +264,21 @@ public class Login extends JFrame {
 
 		String contrasena = String.valueOf(txtContrasena.getPassword());
 
+		boolean valido = false;
+
 		for (int i = 0; usuario.size() > i; i++) {
 
 			if (usuario.get(i).equals(txtUsuario.getText()) && clave.get(i).equals(contrasena)) {
-				MenuUsuario menu = new MenuUsuario();
-				menu.setVisible(true);
-				dispose();
-			} else {
-				JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+				valido = true;
 			}
 		}
+		if (valido) {
+			MenuUsuario menu = new MenuUsuario();
+			menu.setVisible(true);
+			dispose();
+		} else {
+			JOptionPane.showMessageDialog(this, "Usuario o Contraseña no válidos");
+		}
+
 	}
 }

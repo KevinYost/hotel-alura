@@ -5,7 +5,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import jdbc.factory.ConnectionFactory;
 import jdbc.modelo.Reserva;
 
 public class ReservaDAO {
@@ -69,24 +74,6 @@ public class ReservaDAO {
 	        throw new RuntimeException(e);
 	    }
 	}
-	
-	public int eliminarHuesped(Integer id) {	
-	    try {
-	        final PreparedStatement statement = con.prepareStatement("DELETE FROM HUESPEDES WHERE ID = ?");
-	        
-
-	        try (statement) {
-	            statement.setInt(1, id);
-	            statement.execute();
-
-	            int updateCount = statement.getUpdateCount();
-
-	            return updateCount;
-	        }
-	    } catch (SQLException e) {
-	        throw new RuntimeException(e);
-	    }
-	}
 
 
 	public Object modificar(Integer id, Date fechaEntrada, Date fechaSalida, String valor, String formaPago) {
@@ -115,5 +102,72 @@ public class ReservaDAO {
 	    } catch (SQLException e) {
 	        throw new RuntimeException(e);
 	    }
+	}
+
+
+	public List<Map<String, String>> listarReservas() {
+		ConnectionFactory factory = new ConnectionFactory();
+		try{
+			final Connection con = factory.recuperaConexion();
+			try (con) {
+				final PreparedStatement statement = con
+						.prepareStatement("SELECT ID, FechaEntrada, FechaSalida, Valor, FormaPago FROM reservas");
+				try (statement) {
+					statement.execute();
+	
+					ResultSet resultSet = statement.getResultSet();
+	
+					List<Map<String, String>> resultado = new ArrayList<>();
+	
+					while (resultSet.next()) {
+						Map<String, String> fila = new HashMap<>();
+						fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+						fila.put("FechaEntrada", String.valueOf(resultSet.getDate("FechaEntrada")));
+						fila.put("FechaSalida", String.valueOf(resultSet.getDate("FechaSalida")));
+						fila.put("Valor", resultSet.getString("Valor"));
+						fila.put("FormaPago", resultSet.getString("FormaPago"));
+	
+						resultado.add(fila);
+					}
+					return resultado;
+				}
+			}
+			}catch(SQLException e) {
+				throw new RuntimeException(e);
+			}
+		
+	}
+
+
+	public List<Map<String, String>> buscarReservas(String where) {
+		ConnectionFactory factory = new ConnectionFactory();
+		try{
+			final Connection con = factory.recuperaConexion();
+			try (con) {
+				final PreparedStatement statement = con
+						.prepareStatement("SELECT ID, FechaEntrada, FechaSalida, Valor, FormaPago FROM reservas " + where);
+				try (statement) {
+					statement.execute();
+	
+					ResultSet resultSet = statement.getResultSet();
+	
+					List<Map<String, String>> resultado = new ArrayList<>();
+	
+					while (resultSet.next()) {
+						Map<String, String> fila = new HashMap<>();
+						fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+						fila.put("FechaEntrada", String.valueOf(resultSet.getDate("FechaEntrada")));
+						fila.put("FechaSalida", String.valueOf(resultSet.getDate("FechaSalida")));
+						fila.put("Valor", resultSet.getString("Valor"));
+						fila.put("FormaPago", resultSet.getString("FormaPago"));
+	
+						resultado.add(fila);
+					}
+					return resultado;
+				}
+			}
+			}catch(SQLException e) {
+				throw new RuntimeException(e);
+			}
 	}
 }

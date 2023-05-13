@@ -325,6 +325,13 @@ public class ReservasView extends JFrame {
 		panel.add(btnsiguiente);
 		btnsiguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+		JLabel labelSiguiente = new JLabel("SIGUIENTE");
+		labelSiguiente.setHorizontalAlignment(SwingConstants.CENTER);
+		labelSiguiente.setForeground(Color.WHITE);
+		labelSiguiente.setFont(new Font("Dialog", Font.PLAIN, 18));
+		labelSiguiente.setBounds(0, 0, 122, 35);
+		btnsiguiente.add(labelSiguiente);
+
 	}
 
 	public void calcularValor(JDateChooser txtFechaEntrada, JDateChooser txtFechaSalida) {
